@@ -1,6 +1,9 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
+import { Suspense } from "react"
+import LoadingFallback from "@/components/loading-fallback"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NuqsAdapter>
+          <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
+        </NuqsAdapter>
       </body>
     </html>
   )
