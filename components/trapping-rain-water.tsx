@@ -1,11 +1,12 @@
 "use client"
 
 import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs"
-import { useState } from "react"
-import { useMap } from "usehooks-ts"
+import { useRef, useState } from "react"
+import { useMap, useResizeObserver } from "usehooks-ts"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 
 export default function TrappingRainWater() {
   const [arr, setArr] = useQueryState(
@@ -20,6 +21,12 @@ export default function TrappingRainWater() {
   const [result, setResult] = useState(0)
   const [waterLevels, actions] = useMap<number, number>()
 
+  const ref = useRef<HTMLDivElement>(null)
+  const { width = 0, height = 0 } = useResizeObserver({
+    ref: ref as React.RefObject<HTMLElement>,
+    box: "border-box",
+  })
+
   function reset(newArr: number[]) {
     setArr(newArr)
     setLMax(0)
@@ -33,7 +40,7 @@ export default function TrappingRainWater() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newArr = e.target.value.split(",").reduce<number[]>((acc, str) => {
       const num = parseInt(str, 10)
-      if (!Number.isNaN(num) && num < 40) acc.push(num)
+      if (!Number.isNaN(num) && num < 100) acc.push(num)
       return acc
     }, [])
 
@@ -41,8 +48,8 @@ export default function TrappingRainWater() {
   }
 
   function handleRandom() {
-    const newArr = Array.from({ length: Math.random() * 59 + 1 }, () =>
-      Math.round(Math.random() * 39),
+    const newArr = Array.from({ length: Math.random() * 99 + 1 }, () =>
+      Math.round(Math.random() * 99),
     )
 
     reset(newArr)
@@ -83,40 +90,48 @@ export default function TrappingRainWater() {
         </Button>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
-        <div className="flex items-end border p-1">
-          {arr.map((height, index) => (
-            <div key={`${index}-${height}`} className="text-center text-xs">
-              <div id="water" className="bg-cyan-300">
-                {Array.from({ length: waterLevels.get(index) || 0 }).map(
-                  (level, idx) => (
-                    <div key={`${idx}-${level}`} className="h-6 w-8"></div>
-                  ),
-                )}
-              </div>
-              <div
-                id="building"
-                className={cn("w-8 bg-amber-300", {
-                  "bg-emerald-400": index === lMax,
-                  "bg-emerald-300": index === left,
-                  "bg-fuchsia-300": index === right,
-                  "bg-fuchsia-400": index === rMax,
-                  "bg-amber-300": left > right,
-                })}
-              >
-                {Array.from({ length: height }).map((level, idx) => (
-                  <div
-                    key={`${idx}-${level}`}
-                    className="flex items-center justify-center p-1"
-                  >
-                    {height - idx}
+      <div className="flex-1" ref={ref}>
+        <ScrollArea style={{ height, width }}>
+          <div
+            className="flex items-center justify-center"
+            style={{ minHeight: height, minWidth: width }}
+          >
+            <div className="flex items-end border p-1">
+              {arr.map((height, index) => (
+                <div key={`${index}-${height}`} className="text-center text-xs">
+                  <div id="water" className="bg-cyan-300">
+                    {Array.from({ length: waterLevels.get(index) || 0 }).map(
+                      (level, idx) => (
+                        <div key={`${idx}-${level}`} className="h-6 w-8"></div>
+                      ),
+                    )}
                   </div>
-                ))}
-              </div>
-              <span>{index}</span>
+                  <div
+                    id="building"
+                    className={cn("w-8 bg-amber-300", {
+                      "bg-emerald-400": index === lMax,
+                      "bg-emerald-300": index === left,
+                      "bg-fuchsia-300": index === right,
+                      "bg-fuchsia-400": index === rMax,
+                      "bg-amber-300": left > right,
+                    })}
+                  >
+                    {Array.from({ length: height }).map((level, idx) => (
+                      <div
+                        key={`${idx}-${level}`}
+                        className="flex items-center justify-center p-1"
+                      >
+                        {height - idx}
+                      </div>
+                    ))}
+                  </div>
+                  <span>{index}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       <div className="flex justify-center space-x-1 border-t p-1">
