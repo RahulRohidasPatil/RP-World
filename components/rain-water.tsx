@@ -97,10 +97,10 @@ export default function RainWater() {
               <div
                 id="building"
                 className={cn("w-8 bg-amber-300", {
-                  "bg-blue-300": index === lMax,
+                  "bg-emerald-400": index === lMax,
                   "bg-emerald-300": index === left,
                   "bg-fuchsia-300": index === right,
-                  "bg-red-300": index === rMax,
+                  "bg-fuchsia-400": index === rMax,
                   "bg-amber-300": left > right,
                 })}
               >
@@ -119,11 +119,11 @@ export default function RainWater() {
       </div>
 
       <div className="flex justify-center space-x-1 border-t p-1">
-        <div className="bg-blue-300 p-1">lMax: {lMax}</div>
+        <div className="bg-emerald-400 p-1">lMax: {lMax}</div>
         <div className="bg-emerald-300 p-1">left: {left}</div>
         <div className="bg-fuchsia-300 p-1">right: {right}</div>
-        <div className="bg-red-300 p-1">rMax: {rMax}</div>
-        <div className="bg-orange-300 p-1">result: {result}</div>
+        <div className="bg-fuchsia-400 p-1">rMax: {rMax}</div>
+        <div className="bg-cyan-300 p-1">result: {result}</div>
       </div>
     </>
   )
