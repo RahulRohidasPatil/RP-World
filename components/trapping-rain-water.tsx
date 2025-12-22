@@ -48,7 +48,7 @@ export default function TrappingRainWater() {
   }
 
   function handleRandom() {
-    const newArr = Array.from({ length: Math.random() * 59 + 1 }, () =>
+    const newArr = Array.from({ length: Math.random() * 79 + 1 }, () =>
       Math.round(Math.random() * 39),
     )
 
@@ -98,17 +98,20 @@ export default function TrappingRainWater() {
           >
             <div className="flex items-end border p-1">
               {arr.map((height, index) => (
-                <div key={`${index}-${height}`} className="text-center text-xs">
+                <div
+                  key={`${index}-${height}`}
+                  className="w-6 text-center text-xs"
+                >
                   <div id="water" className="bg-cyan-300">
                     {Array.from({ length: waterLevels.get(index) || 0 }).map(
                       (level, idx) => (
-                        <div key={`${idx}-${level}`} className="h-6 w-8"></div>
+                        <div key={`${idx}-${level}`} className="h-6" />
                       ),
                     )}
                   </div>
                   <div
                     id="building"
-                    className={cn("w-8 bg-amber-300", {
+                    className={cn("bg-amber-300", {
                       "bg-emerald-400": index === lMax,
                       "bg-emerald-300": index === left,
                       "bg-fuchsia-300": index === right,
@@ -117,10 +120,7 @@ export default function TrappingRainWater() {
                     })}
                   >
                     {Array.from({ length: height }).map((level, idx) => (
-                      <div
-                        key={`${idx}-${level}`}
-                        className="flex items-center justify-center p-1"
-                      >
+                      <div key={`${idx}-${level}`} className="p-1">
                         {height - idx}
                       </div>
                     ))}
