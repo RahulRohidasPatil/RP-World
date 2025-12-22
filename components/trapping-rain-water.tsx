@@ -33,7 +33,7 @@ export default function TrappingRainWater() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newArr = e.target.value.split(",").reduce<number[]>((acc, str) => {
       const num = parseInt(str, 10)
-      if (!Number.isNaN(num) && num <= 30) acc.push(num)
+      if (!Number.isNaN(num) && num < 31) acc.push(num)
       return acc
     }, [])
 
