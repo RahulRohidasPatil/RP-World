@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 
-export default function RainWater() {
+export default function TrappingRainWater() {
   const [arr, setArr] = useQueryState(
     "arr",
     parseAsArrayOf(parseAsInteger).withDefault([]),
