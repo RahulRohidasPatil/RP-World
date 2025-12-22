@@ -31,10 +31,11 @@ export default function RainWater() {
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newArr = e.target.value
-      .split(",")
-      .map((str) => parseInt(str, 10))
-      .filter((num) => !Number.isNaN(num))
+    const newArr = e.target.value.split(",").reduce<number[]>((acc, str) => {
+      const num = parseInt(str, 10)
+      if (!Number.isNaN(num) && num <= 30) acc.push(num)
+      return acc
+    }, [])
 
     reset(newArr)
   }
