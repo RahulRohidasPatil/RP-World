@@ -33,7 +33,7 @@ export default function TrappingRainWater() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newArr = e.target.value.split(",").reduce<number[]>((acc, str) => {
       const num = parseInt(str, 10)
-      if (!Number.isNaN(num) && num < 31) acc.push(num)
+      if (!Number.isNaN(num) && num < 40) acc.push(num)
       return acc
     }, [])
 
@@ -42,7 +42,7 @@ export default function TrappingRainWater() {
 
   function handleRandom() {
     const newArr = Array.from({ length: Math.random() * 59 + 1 }, () =>
-      Math.round(Math.random() * 30),
+      Math.round(Math.random() * 39),
     )
 
     reset(newArr)
@@ -86,11 +86,11 @@ export default function TrappingRainWater() {
       <div className="flex flex-1 items-center justify-center">
         <div className="flex items-end border p-1">
           {arr.map((height, index) => (
-            <div key={`${index}-${height}`}>
+            <div key={`${index}-${height}`} className="text-center text-xs">
               <div id="water" className="bg-cyan-300">
                 {Array.from({ length: waterLevels.get(index) || 0 }).map(
                   (level, idx) => (
-                    <div key={`${idx}-${level}`} className="size-8"></div>
+                    <div key={`${idx}-${level}`} className="h-6 w-8"></div>
                   ),
                 )}
               </div>
@@ -107,12 +107,13 @@ export default function TrappingRainWater() {
                 {Array.from({ length: height }).map((level, idx) => (
                   <div
                     key={`${idx}-${level}`}
-                    className="flex size-8 items-center justify-center text-xs"
+                    className="flex items-center justify-center p-1"
                   >
                     {height - idx}
                   </div>
                 ))}
               </div>
+              <span>{index}</span>
             </div>
           ))}
         </div>
