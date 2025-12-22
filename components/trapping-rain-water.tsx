@@ -48,8 +48,8 @@ export default function TrappingRainWater() {
   }
 
   function handleRandom() {
-    const newArr = Array.from({ length: Math.random() * 99 + 1 }, () =>
-      Math.round(Math.random() * 99),
+    const newArr = Array.from({ length: Math.random() * 59 + 1 }, () =>
+      Math.round(Math.random() * 39),
     )
 
     reset(newArr)
