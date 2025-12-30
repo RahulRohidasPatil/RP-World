@@ -35,9 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <main className="mx-auto flex min-h-dvh flex-col gap-1 p-1 sm:w-xl md:w-2xl lg:w-4xl xl:w-6xl 2xl:w-7xl">
-            <Suspense>{children}</Suspense>
-          </main>
+          <Suspense>{children}</Suspense>
         </ThemeProvider>
       </body>
     </html>
