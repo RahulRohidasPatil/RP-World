@@ -1,5 +1,5 @@
 import type { UseChatHelpers } from "@ai-sdk/react"
-import type { ChatStatus, UIMessage } from "ai"
+import type { UIMessage } from "ai"
 import { useRef, useState } from "react"
 import {
   PromptInput,
@@ -20,27 +20,42 @@ import {
 } from "./ai-elements/prompt-input"
 
 type Props = {
-  status: ChatStatus
+  status: UseChatHelpers<UIMessage>["status"]
   sendMessage: UseChatHelpers<UIMessage>["sendMessage"]
+  stop: UseChatHelpers<UIMessage>["stop"]
 }
 
-export default function CustomPromptInput({ status, sendMessage }: Props) {
+export default function CustomPromptInput({
+  status,
+  sendMessage,
+  stop,
+}: Props) {
   const [text, setText] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   function handleSubmit(message: PromptInputMessage) {
-    const hasText = Boolean(message.text)
-    const hasAttachments = Boolean(message.files?.length)
+    switch (status) {
+      case "submitted":
+      case "streaming": {
+        stop()
+        break
+      }
+      case "ready": {
+        const hasText = Boolean(message.text)
+        const hasAttachments = Boolean(message.files?.length)
 
-    if (!(hasText || hasAttachments)) {
-      return
+        if (!(hasText || hasAttachments)) {
+          return
+        }
+
+        sendMessage({
+          text: message.text || "Sent with attachments",
+          files: message.files,
+        })
+        setText("")
+        break
+      }
     }
-
-    sendMessage({
-      text: message.text || "Sent with attachments",
-      files: message.files,
-    })
-    setText("")
   }
 
   return (
@@ -72,7 +87,7 @@ export default function CustomPromptInput({ status, sendMessage }: Props) {
             textareaRef={textareaRef}
           />
         </PromptInputTools>
-        <PromptInputSubmit disabled={!text && !status} status={status} />
+        <PromptInputSubmit status={status} />
       </PromptInputFooter>
     </PromptInput>
   )

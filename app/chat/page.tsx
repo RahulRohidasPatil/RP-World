@@ -64,7 +64,7 @@ function splitMessageParts(message: UIMessage) {
 }
 
 export default function Page() {
-  const { messages, status, sendMessage } = useChat()
+  const { messages, status, sendMessage, stop } = useChat()
 
   return (
     <>
@@ -146,7 +146,11 @@ export default function Page() {
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
-      <CustomPromptInput status={status} sendMessage={sendMessage} />
+      <CustomPromptInput
+        status={status}
+        sendMessage={sendMessage}
+        stop={stop}
+      />
     </>
   )
 }
