@@ -8,7 +8,7 @@ export default function Layout({ children }: LayoutProps<"/chat">) {
         <ModeToggle />
         <SignOutButton />
       </header>
-      <div className="mx-auto flex flex-1 flex-col gap-1 overflow-hidden sm:w-xl md:w-2xl lg:w-4xl xl:w-6xl 2xl:w-7xl">
+      <div className="mx-auto flex w-full flex-1 flex-col gap-1 overflow-hidden sm:w-xl md:w-2xl lg:w-4xl xl:w-6xl 2xl:w-7xl">
         {children}
       </div>
     </div>
