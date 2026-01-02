@@ -3,6 +3,15 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Suspense } from "react"
 import "./globals.css"
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +40,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
+          <ClerkProvider>
+            {/* Clerk components go here */}
+            <header className="flex h-16 items-center justify-end gap-4 p-4">
+              <Suspense>
+                <SignedOut>
+                  <SignInButton />
+                  <SignUpButton>
+                    <Button className="h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 font-medium text-ceramic-white text-sm sm:h-12 sm:px-5 sm:text-base">
+                      Sign Up
+                    </Button>
+                  </SignUpButton>
+                </SignedOut>
+              </Suspense>
+              <Suspense>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </Suspense>
+            </header>
+          </ClerkProvider>
           <Suspense>{children}</Suspense>
         </ThemeProvider>
       </body>
