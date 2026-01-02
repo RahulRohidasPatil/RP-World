@@ -1,5 +1,15 @@
+import type { Metadata, Viewport } from "next"
 import { ModeToggle } from "@/components/mode-toggle"
 import SignOutButton from "@/components/sign-out-button"
+
+export const metadata: Metadata = {
+  title: "Chatbot",
+  description: "Gemini 3 Pro",
+}
+
+export const viewport: Viewport = {
+  interactiveWidget: "resizes-content",
+}
 
 export default function Layout({ children }: LayoutProps<"/chat">) {
   return (
