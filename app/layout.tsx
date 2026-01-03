@@ -1,12 +1,12 @@
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs"
+import { shadcn } from "@clerk/themes"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
-import "./globals.css"
-import { shadcn } from "@clerk/themes"
 import { Suspense } from "react"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Spinner } from "@/components/ui/spinner"
+import "./globals.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +35,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={<Spinner />}>
+          <Suspense
+            fallback={
+              <div className="flex justify-center py-2">
+                <Spinner />
+              </div>
+            }
+          >
             <ClerkProvider
               appearance={{
                 theme: shadcn,
