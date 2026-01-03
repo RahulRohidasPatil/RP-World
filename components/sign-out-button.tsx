@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client"
 import { Button } from "./ui/button"
 
 export default function SignOutButton() {
+  const { data: session } = authClient.useSession()
   const router = useRouter()
 
   async function handleClick() {
@@ -18,9 +19,9 @@ export default function SignOutButton() {
     })
   }
 
-  return (
+  return session ? (
     <Button variant="outline" size="icon" onClick={handleClick}>
       <LogOut />
     </Button>
-  )
+  ) : null
 }
