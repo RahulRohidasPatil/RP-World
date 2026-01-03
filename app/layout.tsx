@@ -1,10 +1,9 @@
-import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs"
-import { shadcn } from "@clerk/themes"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Suspense } from "react"
 import { ModeToggle } from "@/components/mode-toggle"
+import SignOutButton from "@/components/sign-out-button"
 import { Spinner } from "@/components/ui/spinner"
 import "./globals.css"
 
@@ -35,26 +34,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
+          <header className="flex items-center justify-end gap-2 p-2">
+            <ModeToggle />
+            <SignOutButton />
+          </header>
           <Suspense
             fallback={
-              <div className="flex justify-center py-2">
+              <div className="mt-4 flex items-center justify-center">
                 <Spinner />
               </div>
             }
           >
-            <ClerkProvider
-              appearance={{
-                theme: shadcn,
-              }}
-            >
-              <header className="flex items-center justify-end gap-2 p-2">
-                <ModeToggle />
-                <SignedIn>
-                  <UserButton showName fallback={<Spinner />} />
-                </SignedIn>
-              </header>
-              {children}
-            </ClerkProvider>
+            {children}
           </Suspense>
         </ThemeProvider>
       </body>

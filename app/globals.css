@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@clerk/themes/shadcn.css";
 
 /* include utility classes in streamdown */
 @source "../node_modules/streamdown/dist/*.js";
