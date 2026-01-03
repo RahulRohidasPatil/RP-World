@@ -1,3 +1,5 @@
+"use cache"
+
 import type { Metadata, Viewport } from "next"
 
 export const metadata: Metadata = {
@@ -9,7 +11,7 @@ export const viewport: Viewport = {
   interactiveWidget: "resizes-content",
 }
 
-export default function Layout({ children }: LayoutProps<"/chat">) {
+export default async function Layout({ children }: LayoutProps<"/chat">) {
   return (
     <div className="container mx-auto flex h-[calc(100dvh-52px)] flex-col gap-2 overflow-hidden p-2">
       {children}
