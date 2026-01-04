@@ -58,11 +58,7 @@ export default function CustomPromptInput({
             text: message.text || "Sent with attachments",
             files: message.files,
           },
-          {
-            body: {
-              model,
-            },
-          },
+          { body: { model } },
         )
         setText("")
         break

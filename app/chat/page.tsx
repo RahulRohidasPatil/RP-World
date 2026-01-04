@@ -34,6 +34,7 @@ import {
   SourcesTrigger,
 } from "@/components/ai-elements/sources"
 import CustomPromptInput from "@/components/custom-prompt-input"
+import GeminiImage from "@/components/gemini-image"
 
 function splitMessageParts(message: UIMessage) {
   return message.parts.reduce(
@@ -87,7 +88,7 @@ export default function Page() {
                   from={message.role}
                   className="text-justify"
                 >
-                  {fileParts.length > 0 && (
+                  {message.role === "user" && fileParts.length > 0 && (
                     <MessageAttachments>
                       {fileParts.map((part) => (
                         <MessageAttachment data={part} key={part.url} />
@@ -124,6 +125,14 @@ export default function Page() {
                       }
                     }
                   })}
+
+                  {message.role === "assistant" && (
+                    <div className="flex gap-2">
+                      {fileParts.map((part) => (
+                        <GeminiImage key={part.url} src={part.url} />
+                      ))}
+                    </div>
+                  )}
 
                   {message.role === "assistant" && (
                     <Sources>
