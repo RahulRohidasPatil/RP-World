@@ -127,7 +127,7 @@ export default function Page() {
                   })}
 
                   {message.role === "assistant" && (
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {fileParts.map((part) => (
                         <GeminiImage key={part.url} src={part.url} />
                       ))}
