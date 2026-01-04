@@ -1,6 +1,7 @@
 import type { UseChatHelpers } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
 import { useState } from "react"
+import { models } from "@/lib/constants"
 import {
   PromptInput,
   PromptInputActionAddAttachments,
@@ -13,6 +14,11 @@ import {
   PromptInputFooter,
   PromptInputHeader,
   type PromptInputMessage,
+  PromptInputSelect,
+  PromptInputSelectContent,
+  PromptInputSelectItem,
+  PromptInputSelectTrigger,
+  PromptInputSelectValue,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
@@ -30,6 +36,7 @@ export default function CustomPromptInput({
   stop,
 }: Props) {
   const [text, setText] = useState<string>("")
+  const [model, setModel] = useState<string>(models[0].id)
 
   function handleSubmit(message: PromptInputMessage) {
     switch (status) {
@@ -46,10 +53,17 @@ export default function CustomPromptInput({
           return
         }
 
-        sendMessage({
-          text: message.text || "Sent with attachments",
-          files: message.files,
-        })
+        sendMessage(
+          {
+            text: message.text || "Sent with attachments",
+            files: message.files,
+          },
+          {
+            body: {
+              model,
+            },
+          },
+        )
         setText("")
         break
       }
@@ -90,6 +104,23 @@ export default function CustomPromptInput({
               <PromptInputActionAddAttachments />
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
+          <PromptInputSelect
+            onValueChange={(value) => {
+              setModel(value)
+            }}
+            value={model}
+          >
+            <PromptInputSelectTrigger>
+              <PromptInputSelectValue />
+            </PromptInputSelectTrigger>
+            <PromptInputSelectContent>
+              {models.map((model) => (
+                <PromptInputSelectItem key={model.id} value={model.id}>
+                  {model.name}
+                </PromptInputSelectItem>
+              ))}
+            </PromptInputSelectContent>
+          </PromptInputSelect>
         </PromptInputTools>
         <PromptInputSubmit status={status} />
       </PromptInputFooter>

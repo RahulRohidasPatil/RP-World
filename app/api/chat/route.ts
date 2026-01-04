@@ -1,11 +1,16 @@
 import { type GoogleGenerativeAIProviderOptions, google } from "@ai-sdk/google"
 import { convertToModelMessages, streamText, type UIMessage } from "ai"
+import type { models } from "@/lib/constants"
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json()
+  const {
+    messages,
+    model,
+  }: { messages: UIMessage[]; model: (typeof models)[number]["id"] } =
+    await req.json()
 
   const result = streamText({
-    model: google("gemini-3-pro-preview"),
+    model: google(model),
     messages: await convertToModelMessages(messages),
     tools: {
       code_execution: google.tools.codeExecution({}),
@@ -15,6 +20,7 @@ export async function POST(req: Request) {
     providerOptions: {
       google: {
         thinkingConfig: {
+          thinkingLevel: model === "gemini-3-pro-preview" ? "high" : "minimal",
           includeThoughts: true,
         },
       } satisfies GoogleGenerativeAIProviderOptions,
