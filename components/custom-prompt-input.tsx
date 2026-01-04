@@ -113,7 +113,7 @@ export default function CustomPromptInput({
             <PromptInputSelectTrigger>
               <PromptInputSelectValue />
             </PromptInputSelectTrigger>
-            <PromptInputSelectContent>
+            <PromptInputSelectContent position="popper">
               {models.map((model) => (
                 <PromptInputSelectItem key={model.id} value={model.id}>
                   {model.name}
