@@ -10,6 +10,7 @@ import {
   type UIMessage,
 } from "ai"
 import { MessageSquare } from "lucide-react"
+import { toast } from "sonner"
 import {
   Conversation,
   ConversationContent,
@@ -66,6 +67,7 @@ function splitMessageParts(message: UIMessage) {
 }
 
 function filterMessages(messages: UIMessage[]) {
+  // return messages
   return messages.map((message) =>
     message.role === "assistant"
       ? {
@@ -77,7 +79,7 @@ function filterMessages(messages: UIMessage[]) {
 }
 
 export default function Page() {
-  const { messages, status, sendMessage, stop } = useChat({
+  const { messages, status, sendMessage, stop, setMessages } = useChat({
     transport: new DefaultChatTransport({
       prepareSendMessagesRequest: ({ messages, body }) => ({
         body: {
@@ -86,6 +88,9 @@ export default function Page() {
         },
       }),
     }),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (
@@ -176,9 +181,11 @@ export default function Page() {
         <ConversationScrollButton />
       </Conversation>
       <CustomPromptInput
+        messages={messages}
         status={status}
         sendMessage={sendMessage}
         stop={stop}
+        setMessages={setMessages}
       />
     </>
   )

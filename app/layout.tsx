@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 import SignOutButton from "@/components/sign-out-button"
 import { Spinner } from "@/components/ui/spinner"
 import "./globals.css"
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           >
             {children}
           </Suspense>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
