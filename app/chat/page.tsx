@@ -1,15 +1,8 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react"
-import {
-  DefaultChatTransport,
-  type FileUIPart,
-  type ReasoningUIPart,
-  type SourceUrlUIPart,
-  type TextUIPart,
-  type UIMessage,
-} from "ai"
-import { MessageSquare } from "lucide-react"
+import { DefaultChatTransport } from "ai"
+import { Copy, MessageSquare, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import {
   Conversation,
@@ -19,6 +12,8 @@ import {
 } from "@/components/ai-elements/conversation"
 import {
   Message,
+  MessageAction,
+  MessageActions,
   MessageAttachment,
   MessageAttachments,
   MessageContent,
@@ -37,49 +32,10 @@ import {
 } from "@/components/ai-elements/sources"
 import CustomPromptInput from "@/components/custom-prompt-input"
 import GeminiImage from "@/components/gemini-image"
-
-function splitMessageParts(message: UIMessage) {
-  return message.parts.reduce(
-    (prev, curr) => {
-      switch (curr.type) {
-        case "file": {
-          prev[0].push(curr)
-          break
-        }
-        case "source-url": {
-          prev[1].push(curr)
-          break
-        }
-        case "text":
-        case "reasoning": {
-          prev[2].push(curr)
-          break
-        }
-      }
-      return prev
-    },
-    [[], [], []] as [
-      FileUIPart[],
-      SourceUrlUIPart[],
-      (TextUIPart | ReasoningUIPart)[],
-    ],
-  )
-}
-
-function filterMessages(messages: UIMessage[]) {
-  // return messages
-  return messages.map((message) =>
-    message.role === "assistant"
-      ? {
-          ...message,
-          parts: message.parts.filter((part) => part.type !== "file"),
-        }
-      : message,
-  )
-}
+import { filterMessages, handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function Page() {
-  const { messages, status, sendMessage, stop } = useChat({
+  const { messages, status, sendMessage, stop, setMessages } = useChat({
     transport: new DefaultChatTransport({
       prepareSendMessagesRequest: ({ messages, body }) => ({
         body: {
@@ -152,7 +108,7 @@ export default function Page() {
                     }
                   })}
 
-                  {message.role === "assistant" && (
+                  {message.role === "assistant" && fileParts.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {fileParts.map((part, i) => (
                         <GeminiImage
@@ -162,6 +118,27 @@ export default function Page() {
                       ))}
                     </div>
                   )}
+
+                  <MessageActions
+                    className={
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    }
+                  >
+                    <MessageAction
+                      label="Copy"
+                      onClick={() => handleCopy(message)}
+                    >
+                      <Copy />
+                    </MessageAction>
+                    <MessageAction
+                      label="Delete"
+                      onClick={() => {
+                        setMessages(messages.filter((m) => m.id !== message.id))
+                      }}
+                    >
+                      <Trash2 />
+                    </MessageAction>
+                  </MessageActions>
 
                   {message.role === "assistant" && (
                     <Sources>
