@@ -12,8 +12,8 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6(zod@4.3.5)
       '@ai-sdk/react':
-        specifier: ^3.0.26
-        version: 3.0.26(react@19.2.3)(zod@4.3.5)
+        specifier: ^3.0.28
+        version: 3.0.28(react@19.2.3)(zod@4.3.5)
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
@@ -45,8 +45,8 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2(@types/react@19.2.7)(react@19.2.3)
       ai:
-        specifier: ^6.0.25
-        version: 6.0.25(zod@4.3.5)
+        specifier: ^6.0.26
+        version: 6.0.26(zod@4.3.5)
       better-auth:
         specifier: ^1.4.10
         version: 1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(kysely@0.28.9))(next@16.1.1(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -157,8 +157,8 @@ packages:
     resolution: {integrity: sha512-HrEmNt/BH/hkQ7zpi2o6N3k1ZR1QTb7z85WYhYygiTxOQuaml4CMtHCWRbric5WPU+RNsYI7r1EpyVQMKO1pYw==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/react@3.0.26':
-    resolution: {integrity: sha512-lRY9fZvdmk0my9CgIaUvFd6o3qJfzpYBWXIVy6IyeXU0AGFiSLVfeZZodH/zI3udJ+zMKJOT+mCedFDYAxHTzg==}
+  '@ai-sdk/react@3.0.28':
+    resolution: {integrity: sha512-6vMPHvALzv1KHaDceojCIS9prk1UyP2hHisFc/6/uSdzVxigtXQXmnYG0y8H4G9tOKR4N36xVtXEByhrkMqjiQ==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ~19.0.1 || ~19.1.2 || ^19.2.1
@@ -1481,8 +1481,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ai@6.0.25:
-    resolution: {integrity: sha512-KErk9JWkRaN4j9Xzxuo+twa0TxcYKdYbrRV8iGktduvUeGb0Yd5seWe3yOfuLGERbDBiKI1ajQz28O2FG3WO5A==}
+  ai@6.0.26:
+    resolution: {integrity: sha512-zU3Nvx2uTYzCOiWjsXZbsIFqk8ovn9NvhqXaLGIGe9m7p+faC0bRjWoY3fghzswEwEI9krJn73sd07IPzpl4Qw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -2881,10 +2881,10 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@3.0.26(react@19.2.3)(zod@4.3.5)':
+  '@ai-sdk/react@3.0.28(react@19.2.3)(zod@4.3.5)':
     dependencies:
       '@ai-sdk/provider-utils': 4.0.4(zod@4.3.5)
-      ai: 6.0.25(zod@4.3.5)
+      ai: 6.0.26(zod@4.3.5)
       react: 19.2.3
       swr: 2.3.8(react@19.2.3)
       throttleit: 2.1.0
@@ -3995,7 +3995,7 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  ai@6.0.25(zod@4.3.5):
+  ai@6.0.26(zod@4.3.5):
     dependencies:
       '@ai-sdk/gateway': 3.0.10(zod@4.3.5)
       '@ai-sdk/provider': 3.0.2
