@@ -26,18 +26,40 @@ import {
 } from "./ai-elements/prompt-input"
 
 type Props = {
+  messages: UIMessage[]
   status: UseChatHelpers<UIMessage>["status"]
   sendMessage: UseChatHelpers<UIMessage>["sendMessage"]
   stop: UseChatHelpers<UIMessage>["stop"]
+  setMessages: UseChatHelpers<UIMessage>["setMessages"]
 }
 
 export default function CustomPromptInput({
+  messages,
   status,
   sendMessage,
   stop,
+  setMessages,
 }: Props) {
   const [text, setText] = useState<string>("")
   const [model, setModel] = useState<ModelId>(models[0].id)
+
+  function handleSendMessage(message: PromptInputMessage) {
+    const hasText = Boolean(message.text)
+    const hasAttachments = Boolean(message.files?.length)
+
+    if (!(hasText || hasAttachments)) {
+      return
+    }
+
+    sendMessage(
+      {
+        text: message.text || "Sent with attachments",
+        files: message.files,
+      },
+      { body: { model } },
+    )
+    setText("")
+  }
 
   function handleSubmit(message: PromptInputMessage) {
     switch (status) {
@@ -47,21 +69,12 @@ export default function CustomPromptInput({
         break
       }
       case "ready": {
-        const hasText = Boolean(message.text)
-        const hasAttachments = Boolean(message.files?.length)
-
-        if (!(hasText || hasAttachments)) {
-          return
-        }
-
-        sendMessage(
-          {
-            text: message.text || "Sent with attachments",
-            files: message.files,
-          },
-          { body: { model } },
-        )
-        setText("")
+        handleSendMessage(message)
+        break
+      }
+      case "error": {
+        setMessages(messages.slice(0, -1)) // remove last message
+        handleSendMessage(message)
         break
       }
     }
