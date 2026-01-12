@@ -6,6 +6,8 @@ import { ModeToggle } from "@/components/mode-toggle"
 import SignOutButton from "@/components/sign-out-button"
 import { Spinner } from "@/components/ui/spinner"
 import "./globals.css"
+import Image from "next/image"
+import Link from "next/link"
 import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
@@ -35,9 +37,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <header className="flex items-center justify-end gap-2 p-2">
-            <ModeToggle />
-            <SignOutButton />
+          <header className="flex items-center justify-between p-2">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/icon.jpg" alt="Logo" width={36} height={36} />
+              <span className="font-mono text-3xl">RP-WORLD</span>
+            </Link>
+            <div className="flex items-center gap-2">
+              <ModeToggle />
+              <SignOutButton />
+            </div>
           </header>
           <Suspense
             fallback={
