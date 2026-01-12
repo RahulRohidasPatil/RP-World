@@ -2,12 +2,13 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Suspense } from "react"
-import { ModeToggle } from "@/components/mode-toggle"
-import SignOutButton from "@/components/sign-out-button"
+import { ModeToggle } from "@/components/custom/mode-toggle"
+import SignOutButton from "@/components/custom/sign-out-button"
 import { Spinner } from "@/components/ui/spinner"
 import "./globals.css"
 import Image from "next/image"
 import Link from "next/link"
+import ShinyText from "@/components/ShinyText"
 import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <header className="flex items-center justify-between p-2">
             <Link href="/" className="flex items-center gap-2">
               <Image src="/icon.jpg" alt="Logo" width={36} height={36} />
-              <span className="font-mono text-3xl">RP-WORLD</span>
+              <ShinyText text="RP-WORLD" className="font-serif text-3xl" />
             </Link>
             <div className="flex items-center gap-2">
               <ModeToggle />
