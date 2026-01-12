@@ -23,7 +23,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "../ai-elements/prompt-input"
+} from "./ai-elements/prompt-input"
 
 type Props = {
   status: UseChatHelpers<UIMessage>["status"]

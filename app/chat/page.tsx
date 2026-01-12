@@ -30,8 +30,8 @@ import {
   SourcesContent,
   SourcesTrigger,
 } from "@/components/ai-elements/sources"
-import CustomPromptInput from "@/components/custom/custom-prompt-input"
-import GeminiImage from "@/components/custom/gemini-image"
+import CustomPromptInput from "@/components/custom-prompt-input"
+import GeminiImage from "@/components/gemini-image"
 import { filterMessages, handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function Page() {
