@@ -28,8 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "components/ShinyText.jsx"
+    "**/*.mts"
   ],
   "exclude": ["node_modules"]
 }
