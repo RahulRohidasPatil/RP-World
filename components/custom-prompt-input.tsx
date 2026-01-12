@@ -97,7 +97,7 @@ export default function CustomPromptInput({
       <PromptInputFooter>
         <PromptInputTools>
           <PromptInputActionMenu>
-            <PromptInputActionMenuTrigger />
+            <PromptInputActionMenuTrigger title="Add Attachments" />
             <PromptInputActionMenuContent>
               <PromptInputActionAddAttachments />
             </PromptInputActionMenuContent>
@@ -108,7 +108,7 @@ export default function CustomPromptInput({
             }}
             value={model}
           >
-            <PromptInputSelectTrigger>
+            <PromptInputSelectTrigger title="Select Model">
               <PromptInputSelectValue />
             </PromptInputSelectTrigger>
             <PromptInputSelectContent position="popper">
