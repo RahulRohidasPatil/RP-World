@@ -22,8 +22,8 @@ export default async function Layout({ children }: LayoutProps<"/chat">) {
   }
 
   return (
-    <div className="container mx-auto flex h-[calc(100dvh-52px)] flex-col gap-2 overflow-hidden px-2 pb-2">
+    <main className="container mx-auto flex h-[calc(100dvh-52px)] flex-col gap-2 overflow-hidden px-2 pb-2">
       {children}
-    </div>
+    </main>
   )
 }
