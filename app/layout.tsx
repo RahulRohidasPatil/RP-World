@@ -43,7 +43,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           <header className="flex items-center justify-between p-2">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Logo" width={36} height={36} />
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={36}
+                height={36}
+                loading="eager"
+              />
               <GradientText className="font-serif text-3xl">
                 RP-WORLD
               </GradientText>
