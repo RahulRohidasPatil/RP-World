@@ -1,15 +1,13 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-import { ThemeProvider } from "next-themes"
-import { Suspense } from "react"
-import { ModeToggle } from "@/components/mode-toggle"
-import SignOutButton from "@/components/sign-out-button"
-import { Spinner } from "@/components/ui/spinner"
-import "./globals.css"
 import Image from "next/image"
 import Link from "next/link"
+import { ThemeProvider } from "next-themes"
+import { ModeToggle } from "@/components/mode-toggle"
 import GradientText from "@/components/react-bits/GradientText"
+import SignOutButton from "@/components/sign-out-button"
 import { Toaster } from "@/components/ui/sonner"
+import "./globals.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,15 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <SignOutButton />
             </div>
           </header>
-          <Suspense
-            fallback={
-              <div className="mt-4 flex items-center justify-center">
-                <Spinner />
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>
