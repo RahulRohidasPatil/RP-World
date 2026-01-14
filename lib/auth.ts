@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { nextCookies } from "better-auth/next-js"
+import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 import { db } from "@/db/drizzle"
 import { account, session, user, verification } from "@/db/schema"
 
@@ -23,3 +25,15 @@ export const auth = betterAuth({
   },
   plugins: [nextCookies()],
 })
+
+export async function requireSession() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    redirect("/sign-in")
+  }
+
+  return session
+}
