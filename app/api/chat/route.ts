@@ -1,4 +1,4 @@
-import { type GoogleGenerativeAIProviderOptions, google } from "@ai-sdk/google"
+import { google } from "@ai-sdk/google"
 import {
   convertToModelMessages,
   streamText,
@@ -15,24 +15,9 @@ export async function POST(req: Request) {
     google_search: google.tools.googleSearch({}),
   }
 
-  const isImageModel = model.includes("-image-")
-
-  if (!isImageModel) {
+  if (!model.includes("-image-")) {
     tools.code_execution = google.tools.codeExecution({})
     tools.url_context = google.tools.urlContext({})
-  }
-
-  const googleOptions: GoogleGenerativeAIProviderOptions = {
-    thinkingConfig: {
-      thinkingLevel: model.includes("-flash-") ? "minimal" : undefined,
-      includeThoughts: true,
-    },
-  }
-
-  if (isImageModel) {
-    googleOptions.imageConfig = {
-      // imageSize: "4K",
-    }
   }
 
   const result = streamText({
@@ -40,7 +25,12 @@ export async function POST(req: Request) {
     messages: await convertToModelMessages(messages),
     tools,
     providerOptions: {
-      google: googleOptions,
+      google: {
+        thinkingConfig: {
+          thinkingLevel: model.includes("-flash-") ? "minimal" : undefined,
+          includeThoughts: true,
+        },
+      },
     },
   })
 
