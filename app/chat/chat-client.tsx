@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react"
 import { AlertCircleIcon, Copy, MessageSquare, Trash2, X } from "lucide-react"
+import { useState } from "react"
 import {
   Conversation,
   ConversationContent,
@@ -29,15 +30,13 @@ import { Button } from "@/components/ui/button"
 import { handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function ChatClient() {
-  const {
-    messages,
-    status,
-    sendMessage,
-    stop,
-    setMessages,
-    error,
-    regenerate,
-  } = useChat()
+  const [error, setError] = useState("")
+
+  const { messages, status, sendMessage, stop, setMessages } = useChat({
+    onError(err) {
+      setError(err.message)
+    },
+  })
 
   return (
     <>
@@ -130,8 +129,8 @@ export default function ChatClient() {
         <Alert variant="destructive">
           <AlertCircleIcon />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
-          <AlertAction onClick={() => regenerate()}>
+          <AlertDescription>{error}</AlertDescription>
+          <AlertAction onClick={() => setError("")}>
             <Button variant="ghost" size="icon-sm">
               <X />
             </Button>
