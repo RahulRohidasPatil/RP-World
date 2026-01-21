@@ -1,10 +1,4 @@
-import type {
-  FileUIPart,
-  ReasoningUIPart,
-  SourceUrlUIPart,
-  TextUIPart,
-  UIMessage,
-} from "ai"
+import type { FileUIPart, TextUIPart, ToolUIPart, UIMessage } from "ai"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -20,36 +14,19 @@ export function splitMessageParts(message: UIMessage) {
           prev[0].push(curr)
           break
         }
-        case "source-url": {
+        case "text": {
           prev[1].push(curr)
           break
         }
-        case "text":
-        case "reasoning": {
+        case "tool-image_generation": {
           prev[2].push(curr)
           break
         }
       }
       return prev
     },
-    [[], [], []] as [
-      FileUIPart[],
-      SourceUrlUIPart[],
-      (TextUIPart | ReasoningUIPart)[],
-    ],
+    [[], [], []] as [FileUIPart[], TextUIPart[], ToolUIPart[]],
   )
-}
-
-export function filterMessages(messages: UIMessage[]) {
-  return messages
-  // return messages.map((message) =>
-  //   message.role === "assistant"
-  //     ? {
-  //         ...message,
-  //         parts: message.parts.filter((part) => part.type !== "file"),
-  //       }
-  //     : message,
-  // )
 }
 
 export function handleCopy(message: UIMessage) {
