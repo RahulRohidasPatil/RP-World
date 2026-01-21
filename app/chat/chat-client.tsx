@@ -2,8 +2,8 @@
 
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
-import { Copy, MessageSquare, Trash2 } from "lucide-react"
-import { toast } from "sonner"
+import { AlertCircleIcon, Copy, MessageSquare, Trash2, X } from "lucide-react"
+import { useState } from "react"
 import {
   Conversation,
   ConversationContent,
@@ -32,9 +32,18 @@ import {
 } from "@/components/ai-elements/sources"
 import CustomPromptInput from "@/components/custom-prompt-input"
 import GeminiImage from "@/components/gemini-image"
+import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import { filterMessages, handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function ChatClient() {
+  const [error, setError] = useState("")
+
   const { messages, status, sendMessage, stop, setMessages } = useChat({
     transport: new DefaultChatTransport({
       prepareSendMessagesRequest: ({ messages, body }) => ({
@@ -45,7 +54,8 @@ export default function ChatClient() {
       }),
     }),
     onError: (error) => {
-      toast.error(error.message)
+      // toast.error(error.message)
+      setError(error.message)
     },
   })
 
@@ -157,6 +167,18 @@ export default function ChatClient() {
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+          <AlertAction onClick={() => setError("")}>
+            <Button variant="ghost" size="icon-sm">
+              <X />
+            </Button>
+          </AlertAction>
+        </Alert>
+      )}
       <CustomPromptInput
         status={status}
         sendMessage={sendMessage}

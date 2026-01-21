@@ -44,11 +44,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Image
                 src="/logo.png"
                 alt="Logo"
-                width={36}
-                height={36}
+                width={32}
+                height={32}
                 loading="eager"
               />
-              <GradientText className="font-serif text-3xl">
+              <GradientText className="font-serif text-2xl">
                 RP-WORLD
               </GradientText>
             </Link>

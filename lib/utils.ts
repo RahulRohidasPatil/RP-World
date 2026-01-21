@@ -41,15 +41,15 @@ export function splitMessageParts(message: UIMessage) {
 }
 
 export function filterMessages(messages: UIMessage[]) {
-  // return messages
-  return messages.map((message) =>
-    message.role === "assistant"
-      ? {
-          ...message,
-          parts: message.parts.filter((part) => part.type !== "file"),
-        }
-      : message,
-  )
+  return messages
+  // return messages.map((message) =>
+  //   message.role === "assistant"
+  //     ? {
+  //         ...message,
+  //         parts: message.parts.filter((part) => part.type !== "file"),
+  //       }
+  //     : message,
+  // )
 }
 
 export function handleCopy(message: UIMessage) {
