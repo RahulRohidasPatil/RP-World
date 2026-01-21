@@ -1,9 +1,7 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
 import { AlertCircleIcon, Copy, MessageSquare, Trash2, X } from "lucide-react"
-import { useState } from "react"
 import {
   Conversation,
   ConversationContent,
@@ -19,19 +17,8 @@ import {
   MessageContent,
   MessageResponse,
 } from "@/components/ai-elements/message"
-import {
-  Reasoning,
-  ReasoningContent,
-  ReasoningTrigger,
-} from "@/components/ai-elements/reasoning"
-import {
-  Source,
-  Sources,
-  SourcesContent,
-  SourcesTrigger,
-} from "@/components/ai-elements/sources"
+import AiImage from "@/components/ai-image"
 import CustomPromptInput from "@/components/custom-prompt-input"
-import GeminiImage from "@/components/gemini-image"
 import {
   Alert,
   AlertAction,
@@ -39,25 +26,18 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { filterMessages, handleCopy, splitMessageParts } from "@/lib/utils"
+import { handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function ChatClient() {
-  const [error, setError] = useState("")
-
-  const { messages, status, sendMessage, stop, setMessages } = useChat({
-    transport: new DefaultChatTransport({
-      prepareSendMessagesRequest: ({ messages, body }) => ({
-        body: {
-          ...body,
-          messages: filterMessages(messages),
-        },
-      }),
-    }),
-    onError: (error) => {
-      // toast.error(error.message)
-      setError(error.message)
-    },
-  })
+  const {
+    messages,
+    status,
+    sendMessage,
+    stop,
+    setMessages,
+    error,
+    regenerate,
+  } = useChat()
 
   return (
     <>
@@ -71,7 +51,7 @@ export default function ChatClient() {
             />
           ) : (
             messages.map((message) => {
-              const [fileParts, sourceParts, responseParts] =
+              const [fileParts, textParts, imageParts] =
                 splitMessageParts(message)
 
               return (
@@ -80,7 +60,7 @@ export default function ChatClient() {
                   from={message.role}
                   className="text-justify"
                 >
-                  {message.role === "user" && fileParts.length > 0 && (
+                  {fileParts.length > 0 && (
                     <MessageAttachments>
                       {fileParts.map((part) => (
                         <MessageAttachment data={part} key={part.url} />
@@ -88,44 +68,34 @@ export default function ChatClient() {
                     </MessageAttachments>
                   )}
 
-                  {responseParts.map((part, i) => {
-                    switch (part.type) {
-                      case "text": {
-                        return (
-                          <MessageContent key={`${message.id}-${i}`}>
-                            <MessageResponse>{part.text}</MessageResponse>
-                          </MessageContent>
-                        )
-                      }
-                      case "reasoning": {
-                        return (
-                          <Reasoning
-                            key={`${message.id}-${i}`}
-                            isStreaming={
-                              status === "streaming" &&
-                              i === responseParts.length - 1 &&
-                              message.id === messages.at(-1)?.id
-                            }
-                          >
-                            <ReasoningTrigger />
-                            <ReasoningContent>{part.text}</ReasoningContent>
-                          </Reasoning>
-                        )
-                      }
-                      default: {
-                        return null
-                      }
-                    }
-                  })}
+                  {textParts.map((part, i) => (
+                    <MessageContent key={`${message.id}-${i}`}>
+                      <MessageResponse>{part.text}</MessageResponse>
+                    </MessageContent>
+                  ))}
 
-                  {message.role === "assistant" && fileParts.length > 0 && (
+                  {imageParts.length > 0 && (
                     <div className="flex flex-wrap gap-2">
-                      {fileParts.map((part, i) => (
-                        <GeminiImage
-                          key={`${message.id}-${i}`}
-                          src={part.url}
-                        />
-                      ))}
+                      {imageParts.map((part, i) => {
+                        const output = part.output
+
+                        if (
+                          !(
+                            output &&
+                            typeof output === "object" &&
+                            "result" in output
+                          )
+                        ) {
+                          return null
+                        }
+
+                        return (
+                          <AiImage
+                            key={`${message.id}-${i}`}
+                            src={`data:image/webp;base64,${output.result}`}
+                          />
+                        )
+                      })}
                     </div>
                   )}
 
@@ -149,17 +119,6 @@ export default function ChatClient() {
                       <Trash2 />
                     </MessageAction>
                   </MessageActions>
-
-                  {message.role === "assistant" && (
-                    <Sources>
-                      <SourcesTrigger count={sourceParts.length} />
-                      {sourceParts.map((part) => (
-                        <SourcesContent key={part.sourceId}>
-                          <Source href={part.url} title={part.title} />
-                        </SourcesContent>
-                      ))}
-                    </Sources>
-                  )}
                 </Message>
               )
             })
@@ -171,8 +130,8 @@ export default function ChatClient() {
         <Alert variant="destructive">
           <AlertCircleIcon />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-          <AlertAction onClick={() => setError("")}>
+          <AlertDescription>{error.message}</AlertDescription>
+          <AlertAction onClick={() => regenerate()}>
             <Button variant="ghost" size="icon-sm">
               <X />
             </Button>

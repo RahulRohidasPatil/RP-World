@@ -1,43 +1,28 @@
-import { type GoogleGenerativeAIProviderOptions, google } from "@ai-sdk/google"
-import {
-  convertToModelMessages,
-  streamText,
-  type ToolSet,
-  type UIMessage,
-} from "ai"
-import type { ModelId } from "@/lib/types"
+import { type OpenAIResponsesProviderOptions, openai } from "@ai-sdk/openai"
+import { convertToModelMessages, streamText, type UIMessage } from "ai"
 
 export async function POST(req: Request) {
-  const { messages, model }: { messages: UIMessage[]; model: ModelId } =
-    await req.json()
-
-  const tools: ToolSet = {}
-  const googleOptions: GoogleGenerativeAIProviderOptions = {}
-
-  if (!model.includes("flash-image")) {
-    tools.google_search = google.tools.googleSearch({})
-    googleOptions.thinkingConfig = {
-      thinkingLevel: model.includes("3-flash") ? "minimal" : undefined,
-      includeThoughts: true,
-    }
-
-    if (!model.includes("image")) {
-      tools.code_execution = google.tools.codeExecution({})
-      tools.url_context = google.tools.urlContext({})
-    }
-  }
+  const { messages }: { messages: UIMessage[] } = await req.json()
 
   const result = streamText({
-    model: google(model),
+    model: openai("gpt-5.2"),
     messages: await convertToModelMessages(messages),
-    tools,
+    tools: {
+      web_search: openai.tools.webSearch(),
+      image_generation: openai.tools.imageGeneration({
+        quality: "low",
+        outputFormat: "webp",
+        outputCompression: 100,
+        background: "opaque",
+      }),
+      code_interpreter: openai.tools.codeInterpreter(),
+    },
     providerOptions: {
-      google: googleOptions,
+      openai: {
+        textVerbosity: "low",
+      } satisfies OpenAIResponsesProviderOptions,
     },
   })
 
-  return result.toUIMessageStreamResponse({
-    sendSources: true,
-    sendReasoning: true,
-  })
+  return result.toUIMessageStreamResponse()
 }
