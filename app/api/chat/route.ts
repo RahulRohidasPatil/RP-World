@@ -15,7 +15,6 @@ export async function POST(req: Request) {
         outputCompression: 100,
         background: "opaque",
       }),
-      code_interpreter: openai.tools.codeInterpreter(),
     },
     providerOptions: {
       openai: {
