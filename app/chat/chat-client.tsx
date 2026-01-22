@@ -27,12 +27,14 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { CustomTransport } from "@/lib/ai"
 import { handleCopy, splitMessageParts } from "@/lib/utils"
 
 export default function ChatClient() {
   const [error, setError] = useState("")
 
   const { messages, status, sendMessage, stop, setMessages } = useChat({
+    transport: new CustomTransport(),
     onError(err) {
       setError(err.message)
     },

@@ -11,8 +11,8 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^3.0.14",
-    "@ai-sdk/react": "^3.0.47",
+    "@ai-sdk/openai": "^3.0.18",
+    "@ai-sdk/react": "^3.0.50",
     "@neondatabase/serverless": "^1.0.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -21,14 +21,15 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.2.8",
-    "ai": "^6.0.45",
+    "ai": "^6.0.48",
+    "ai-sdk-ollama": "^3.2.0",
     "better-auth": "^1.4.17",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.562.0",
-    "motion": "^12.28.1",
+    "motion": "^12.29.0",
     "nanoid": "^5.1.6",
     "next": "16.1.4",
     "next-themes": "^0.4.6",
@@ -39,7 +40,7 @@
     "streamdown": "^2.1.0",
     "tailwind-merge": "^3.4.0",
     "use-stick-to-bottom": "^1.1.1",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
